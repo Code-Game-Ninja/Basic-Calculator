@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Advanced Calculator</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="container">
+        <nav>
+            <button class="nav-btn active" data-target="calculator">Calculator</button>
+            <button class="nav-btn" data-target="length">Length</button>
+            <button class="nav-btn" data-target="weight">Weight</button>
+            <button class="nav-btn" data-target="temperature">Temperature</button>
+            <button class="nav-btn" data-target="currency">Currency</button>
+        </nav>
+
+        <div class="content active" id="calculator-content">
+            <div class="calculator">
+                <input type="text" id="display" readonly />
+                <div class="buttons">
+                    <button onclick="clearDisplay()" class="clear">C</button>
+                    <button onclick="appendToDisplay('(')">(</button>
+                    <button onclick="appendToDisplay(')')">)</button>
+                    <button onclick="appendToDisplay('/')" class="operator">/</button>
+
+                    <button onclick="appendToDisplay('7')">7</button>
+                    <button onclick="appendToDisplay('8')">8</button>
+                    <button onclick="appendToDisplay('9')">9</button>
+                    <button onclick="appendToDisplay('*')" class="operator">*</button>
+
+                    <button onclick="appendToDisplay('4')">4</button>
+                    <button onclick="appendToDisplay('5')">5</button>
+                    <button onclick="appendToDisplay('6')">6</button>
+                    <button onclick="appendToDisplay('-')" class="operator">-</button>
+
+                    <button onclick="appendToDisplay('1')">1</button>
+                    <button onclick="appendToDisplay('2')">2</button>
+                    <button onclick="appendToDisplay('3')">3</button>
+                    <button onclick="appendToDisplay('+')" class="operator">+</button>
+
+                    <button onclick="appendToDisplay('0')">0</button>
+                    <button onclick="appendToDisplay('.')">.</button>
+                    <button onclick="backspace()">⌫</button>
+                    <button onclick="calculateResult()" class="equals">=</button>
+                </div>
+                <div class="history" id="calc-history"></div>
+            </div>
+        </div>
+
+        <div class="content" id="length-content">
+            <div class="converter">
+                <div class="converter-row">
+                    <input type="number" class="converter-input" id="length-input" oninput="convertLength()" value="1">
+                    <select class="converter-select" id="length-from" onchange="convertLength()">
+                        <option value="mm">Millimeter (mm)</option>
+                        <option value="cm">Centimeter (cm)</option>
+                        <option value="m" selected>Meter (m)</option>
+                        <option value="km">Kilometer (km)</option>
+                        <option value="in">Inch (in)</option>
+                        <option value="ft">Foot (ft)</option>
+                        <option value="yd">Yard (yd)</option>
+                        <option value="mi">Mile (mi)</option>
+                    </select>
+                </div>
+                <button class="swap-btn" onclick="swapUnits('length')">
+                    <i class="fas fa-exchange-alt"></i>
+                </button>
+                <div class="converter-row">
+                    <input type="number" class="converter-input" id="length-output" readonly>
+                    <select class="converter-select" id="length-to" onchange="convertLength()">
+                        <option value="mm">Millimeter (mm)</option>
+                        <option value="cm">Centimeter (cm)</option>
+                        <option value="m">Meter (m)</option>
+                        <option value="km" selected>Kilometer (km)</option>
+                        <option value="in">Inch (in)</option>
+                        <option value="ft">Foot (ft)</option>
+                        <option value="yd">Yard (yd)</option>
+                        <option value="mi">Mile (mi)</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="content" id="weight-content">
+            <div class="converter">
+                <div class="converter-row">
+                    <input type="number" class="converter-input" id="weight-input" oninput="convertWeight()" value="1">
+                    <select class="converter-select" id="weight-from" onchange="convertWeight()">
+                        <option value="mg">Milligram (mg)</option>
+                        <option value="g">Gram (g)</option>
+                        <option value="kg" selected>Kilogram (kg)</option>
+                        <option value="t">Metric Ton (t)</option>
+                        <option value="oz">Ounce (oz)</option>
+                        <option value="lb">Pound (lb)</option>
+                        <option value="st">Stone (st)</option>
+                    </select>
+                </div>
+                <button class="swap-btn" onclick="swapUnits('weight')">
+                    <i class="fas fa-exchange-alt"></i>
+                </button>
+                <div class="converter-row">
+                    <input type="number" class="converter-input" id="weight-output" readonly>
+                    <select class="converter-select" id="weight-to" onchange="convertWeight()">
+                        <option value="mg">Milligram (mg)</option>
+                        <option value="g">Gram (g)</option>
+                        <option value="kg">Kilogram (kg)</option>
+                        <option value="t">Metric Ton (t)</option>
+                        <option value="oz" selected>Ounce (oz)</option>
+                        <option value="lb">Pound (lb)</option>
+                        <option value="st">Stone (st)</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="content" id="temperature-content">
+            <div class="converter">
+                <div class="converter-row">
+                    <input type="number" class="converter-input" id="temp-input" oninput="convertTemperature()"
+                        value="0">
+                    <select class="converter-select" id="temp-from" onchange="convertTemperature()">
+                        <option value="c" selected>°C (Celsius)</option>
+                        <option value="f">°F (Fahrenheit)</option>
+                        <option value="k">K (Kelvin)</option>
+                    </select>
+                </div>
+                <button class="swap-btn" onclick="swapUnits('temp')">
+                    <i class="fas fa-exchange-alt"></i>
+                </button>
+                <div class="converter-row">
+                    <input type="number" class="converter-input" id="temp-output" readonly>
+                    <select class="converter-select" id="temp-to" onchange="convertTemperature()">
+                        <option value="c">°C (Celsius)</option>
+                        <option value="f" selected>°F (Fahrenheit)</option>
+                        <option value="k">K (Kelvin)</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="content" id="currency-content">
+            <div class="converter">
+                <div class="converter-row">
+                    <input type="number" class="converter-input" id="currency-input" oninput="convertCurrency()"
+                        value="1">
+                    <select class="converter-select" id="currency-from" onchange="convertCurrency()">
+                        <option value="USD" selected>USD (US Dollar)</option>
+                        <option value="EUR">EUR (Euro)</option>
+                        <option value="GBP">GBP (British Pound)</option>
+                        <option value="JPY">JPY (Japanese Yen)</option>
+                        <option value="CAD">CAD (Canadian Dollar)</option>
+                        <option value="AUD">AUD (Australian Dollar)</option>
+                    </select>
+                </div>
+                <button class="swap-btn" onclick="swapUnits('currency')">
+                    <i class="fas fa-exchange-alt"></i>
+                </button>
+                <div class="converter-row">
+                    <input type="number" class="converter-input" id="currency-output" readonly>
+                    <select class="converter-select" id="currency-to" onchange="convertCurrency()">
+                        <option value="USD">USD (US Dollar)</option>
+                        <option value="EUR" selected>EUR (Euro)</option>
+                        <option value="GBP">GBP (British Pound)</option>
+                        <option value="JPY">JPY (Japanese Yen)</option>
+                        <option value="CAD">CAD (Canadian Dollar)</option>
+                        <option value="AUD">AUD (Australian Dollar)</option>
+                    </select>
+                </div>
+                <div class="history">
+                    <p><small>Note: Currency conversion uses fixed rates for demonstration. In a real app, you would
+                            fetch live rates from an API.</small></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
